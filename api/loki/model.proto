@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package loki;
+
+message Node {
+  enum Type {
+    DOCKER = 0;
+    K8S = 1;
+  }
+  string id = 1;
+  Type type = 2;
+  string networkId = 3;
+}
+
+message TrickPolicy {
+  int64 delay = 1;
+  int64 keep = 2;
+  int64 interval = 3;
+}
+
+message StateTrick {
+  enum Type {
+    NODE_DOWN = 0;
+    NODE_RESTRT = 1;
+  }
+  repeated Node nodes = 1;
+  Type type = 2;
+  TrickPolicy policy = 3;  
+}
+
+message NodeResource {
+  int64 cpu = 1;
+  int64 memory = 2;
+}
+
+message ResourceTrick {
+  repeated Node nodes = 1;
+  NodeResource resource = 2;
+  TrickPolicy policy = 3;
+}
+
+
+// TODO
+message NetworkTrick {
+
+}

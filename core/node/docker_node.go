@@ -21,7 +21,7 @@ func GetDockerCli() *client.Client {
 
 	if dockerCli == nil {
 		var err error
-		dockerCli, err = client.NewClientWithOpts(client.FromEnv)
+		dockerCli, err = client.NewEnvClient()
 		if err != nil {
 			panic(err)
 		}
@@ -66,14 +66,15 @@ func (node *DockerNode) Disconnect() error {
 func (node *DockerNode) Update(r NodeResource) error {
 	_, err := node.dockerClient.ContainerUpdate(context.Background(), node.containerId, container.UpdateConfig{
 		Resources: container.Resources{
-			Memory:   r.memory,
-			CPUCount: r.cpu,
+			Memory:   r.Memory,
+			CPUCount: r.Cpu,
 		},
 	})
 	return err
 }
 
 func NewDockerNode(containerId string, networkId string) *DockerNode {
+
 	return &DockerNode{
 		containerId:  containerId,
 		networkId:    networkId,

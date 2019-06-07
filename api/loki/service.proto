@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+import public "model.proto";
+
+package loki;
+
+message Empty {
+
+}
+
+message BaseResponse {
+  int32 errorCode = 1;
+  string message = 2;
+}
+
+// manage node CRUD 
+service NodeController {
+  rpc ListNode(Empty) returns(stream Node);
+  rpc AddNode(Node) returns(BaseResponse);
+  rpc RemoveNode (Node) returns (BaseResponse);
+};
+
+// apply trick
+service ResourceTricker {
+  rpc Apply(ResourceTrick) returns (BaseResponse);
+}; 
+
+service StateTricker {
+  rpc Apply(StateTrick) returns (BaseResponse);
+};
+
+service NetworkTricker {
+};
+
+// TODO trick controller 
