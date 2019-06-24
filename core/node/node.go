@@ -11,5 +11,5 @@ type Node interface {
 	Restart() error
 	Connect() error
 	Disconnect() error
-	Update(r NodeResource) error
+	UpdateResource(r NodeResource) error
 }

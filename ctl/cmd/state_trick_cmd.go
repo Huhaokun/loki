@@ -26,7 +26,7 @@ func init() {
 
 type StateTrickCommand struct {
 	Policy trick.TrickPolicy `yaml:"policy"`
-	Nodes  []string          `yaml:",nodes"`
+	Nodes  []string          `yaml:"nodes,flow"`
 	Type   string            `yaml:"type"`
 }
 
@@ -53,9 +53,9 @@ func (cmd *StateTrickCommand) toProto() *loki.StateTrick {
 		Nodes: nodes,
 		Type:  t,
 		Policy: &loki.TrickPolicy{
-			Delay:    int64(cmd.Policy.Delay),
-			Interval: int64(cmd.Policy.Interval),
-			Keep:     int64(cmd.Policy.Keep),
+			Delay:    cmd.Policy.Delay,
+			Interval: cmd.Policy.Interval,
+			Keep:     cmd.Policy.Keep,
 		},
 	}
 
@@ -67,8 +67,8 @@ func applyYaml(filePath string) {
 		log.Fatalf("read file from %s error, err: %s", filePath, err.Error())
 	}
 
-	var trickCommand StateTrickCommand
-	if err := yaml.Unmarshal(bytes, trickCommand); err != nil {
+	trickCommand := StateTrickCommand{}
+	if err := yaml.Unmarshal(bytes, &trickCommand); err != nil {
 		log.Fatalf("parse file as yaml failed, err: %s", err.Error())
 	}
 

@@ -63,7 +63,7 @@ func (node *DockerNode) Disconnect() error {
 	return node.dockerClient.NetworkDisconnect(context.Background(), node.networkId, node.containerId, true)
 }
 
-func (node *DockerNode) Update(r NodeResource) error {
+func (node *DockerNode) UpdateResource(r NodeResource) error {
 	_, err := node.dockerClient.ContainerUpdate(context.Background(), node.containerId, container.UpdateConfig{
 		Resources: container.Resources{
 			Memory:   r.Memory,

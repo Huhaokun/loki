@@ -4,17 +4,17 @@ import "time"
 import log "github.com/sirupsen/logrus"
 
 type TrickPolicy struct {
-	Delay    time.Duration `yaml:"delay"`
-	Keep     time.Duration `yaml:"keep"`
-	Interval time.Duration `yaml:"interval"`
+	Delay    int64 `yaml:"delay"`
+	Keep     int64 `yaml:"keep"`
+	Interval int64 `yaml:"interval"`
 }
 
 func (p *TrickPolicy) Apply(fail func() error, recover func() error) {
-	time.AfterFunc(p.Delay, func() {
+	time.AfterFunc(time.Millisecond * time.Duration(p.Delay), func() {
 		if err := fail(); err != nil {
 			log.Error("apply fail function error, ", err)
 		}
-		time.Sleep(p.Keep)
+		time.Sleep(time.Millisecond * time.Duration(p.Keep))
 		if err := recover(); err != nil {
 			log.Error("apply recover function error, ", err)
 		}

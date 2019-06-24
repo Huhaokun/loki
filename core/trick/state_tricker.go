@@ -10,3 +10,4 @@ type StateTricker struct {
 func (t *StateTricker) StopNode(n node.Node, policy TrickPolicy) {
 	policy.Apply(n.Stop, n.Start)
 }
+
